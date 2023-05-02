@@ -6,7 +6,7 @@
 /*   By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:07 by tgernez           #+#    #+#             */
-/*   Updated: 2023/05/02 16:10:08 by tgernez          ###   ########.fr       */
+/*   Updated: 2023/05/02 21:33:03 by tgernez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ bool	must_simul_end(t_vars *vars)
 {
 	bool	must_end;
 
-	pthread_mutex_lock(&vars->mutex_end);
+	pthread_mutex_lock(&vars->m_end);
 	must_end = vars->end;
-	pthread_mutex_unlock(&vars->mutex_end);
-	pthread_mutex_lock(&vars->mutex_ate_enough);
+	pthread_mutex_unlock(&vars->m_end);
+	pthread_mutex_lock(&vars->m_ate_enough);
 	if (vars->ate_enough >= vars->nb_philo)
 		must_end = true;
-	pthread_mutex_unlock(&vars->mutex_ate_enough);
+	pthread_mutex_unlock(&vars->m_ate_enough);
 	return (must_end);
 }
 
@@ -56,8 +56,9 @@ void	*simulation(void *arg)
 	thread_synching(philo->vars);
 	if (philo->nb % 2 == 0)
 		ft_usleep(10000);
-	while (!must_simul_end(vars) && take_forks(philo, vars))
+	while (!must_simul_end(vars))
 	{
+		take_forks(philo, vars);
 		eat(philo, vars);
 		print_action(philo, SLEEPING, vars);
 		ft_usleep(vars->tts);
@@ -73,19 +74,19 @@ void	monitor(t_philo *philo, t_vars *vars)
 	ft_usleep(20000);
 	while (true)
 	{
-		pthread_mutex_lock(&philo->mutex_last_eat);
+		pthread_mutex_lock(&philo->m_last_eat);
 		get_time(&time);
 		if ((int)(time - philo->last_eat) >= vars->ttd)
 		{
-			pthread_mutex_unlock(&philo->mutex_last_eat);
-			pthread_mutex_lock(&vars->mutex_end);
+			pthread_mutex_unlock(&philo->m_last_eat);
+			pthread_mutex_lock(&vars->m_end);
 			vars->end = true;
-			pthread_mutex_unlock(&vars->mutex_end);
+			pthread_mutex_unlock(&vars->m_end);
 			printf("%lu %d died\n", (time - vars->start_time) / 1000,
 				philo->nb);
 			break ;
 		}
-		pthread_mutex_unlock(&philo->mutex_last_eat);
+		pthread_mutex_unlock(&philo->m_last_eat);
 		if (must_simul_end(vars))
 			break ;
 		philo = philo->next;

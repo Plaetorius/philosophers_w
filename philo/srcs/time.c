@@ -6,7 +6,7 @@
 /*   By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:10 by tgernez           #+#    #+#             */
-/*   Updated: 2023/05/02 16:10:10 by tgernez          ###   ########.fr       */
+/*   Updated: 2023/05/02 19:08:08 by tgernez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ bool	print_action(t_philo *philo, int action, t_vars *vars)
 	if (get_time(&time) == false)
 		return (false);
 	time = (time - vars->start_time) / 1000;
+	pthread_mutex_lock(&vars->m_end);
 	if (vars->end == true)
-	{
-		return (true);
-	}
+		return (pthread_mutex_unlock(&vars->m_end), true);
+	pthread_mutex_unlock(&vars->m_end);
 	if (action == TAKEN_FORK)
 		printf("%lu %d has taken a fork\n", time, philo->nb);
 	else if (action == EATING)
@@ -31,11 +31,6 @@ bool	print_action(t_philo *philo, int action, t_vars *vars)
 		printf("%lu %d is sleeping\n", time, philo->nb);
 	else if (action == THINKING)
 		printf("%lu %d is thinking\n", time, philo->nb);
-	else if (action == DIED)
-	{
-		printf("%lu %d died\n", time, philo->nb);
-		return (true);
-	}
 	return (true);
 }
 
@@ -78,10 +73,10 @@ bool	set_time_start(t_vars *vars)
 	philo = vars->philos;
 	while (i < vars->nb_philo)
 	{
-		pthread_mutex_lock(&philo->mutex_last_eat);
+		pthread_mutex_lock(&philo->m_last_eat);
 		if (get_time(&philo->last_eat) == false)
-			return (pthread_mutex_unlock(&philo->mutex_last_eat), false);
-		pthread_mutex_unlock(&philo->mutex_last_eat);
+			return (pthread_mutex_unlock(&philo->m_last_eat), false);
+		pthread_mutex_unlock(&philo->m_last_eat);
 		philo = philo->next;
 		++i;
 	}

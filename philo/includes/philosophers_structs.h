@@ -6,7 +6,7 @@
 /*   By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:28 by tgernez           #+#    #+#             */
-/*   Updated: 2023/05/02 16:14:44 by tgernez          ###   ########.fr       */
+/*   Updated: 2023/05/02 21:31:02 by tgernez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ typedef struct s_philo
 	pthread_mutex_t		fork;
 	int					nb;
 	t_ul				last_eat;
-	pthread_mutex_t		mutex_last_eat;
+	pthread_mutex_t		m_last_eat;
 	int					meal_number;
 	bool				is_eating;
+	pthread_mutex_t		m_is_eating;
 	struct s_philo		*next;
 	struct s_philo		*prev;
 	t_vars				*vars;
@@ -45,9 +46,9 @@ typedef struct s_vars
 	t_philo				*philos;
 	t_ul				start_time;
 	bool				end;
-	pthread_mutex_t		mutex_end;
+	pthread_mutex_t		m_end;
 	int					ate_enough;
-	pthread_mutex_t		mutex_ate_enough;
+	pthread_mutex_t		m_ate_enough;
 	pthread_mutex_t		synchro;
 	int					synched;
 }						t_vars;
