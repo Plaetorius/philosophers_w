@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+         #
+#    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/22 12:46:27 by tgernez           #+#    #+#              #
-#    Updated: 2023/05/05 13:28:10 by tgernez          ###   ########.fr        #
+#    Updated: 2023/05/05 15:54:47 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS 			=	$(addsuffix ${FTSRCS},	\
 					))
 INCLUDES		= -Iincludes
 CC				= cc
-FLAGS			= -Wall -Wextra -Werror 
+FLAGS			= -Wall -Wextra -Werror -fsanitize=thread
 FLAG_THREADS	= -pthread
 OBJS			= ${SRCS:.c=.o}
 RM				= rm -rf
