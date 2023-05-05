@@ -6,7 +6,7 @@
 #    By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/22 12:46:27 by tgernez           #+#    #+#              #
-#    Updated: 2023/05/05 13:21:57 by tgernez          ###   ########.fr        #
+#    Updated: 2023/05/05 13:28:10 by tgernez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS 			=	$(addsuffix ${FTSRCS},	\
 					))
 INCLUDES		= -Iincludes
 CC				= cc
-FLAGS			= -Wall -Wextra -Werror -fsanitize=thread
+FLAGS			= -Wall -Wextra -Werror 
 FLAG_THREADS	= -pthread
 OBJS			= ${SRCS:.c=.o}
 RM				= rm -rf
