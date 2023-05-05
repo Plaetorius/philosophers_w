@@ -6,7 +6,7 @@
 /*   By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:24 by tgernez           #+#    #+#             */
-/*   Updated: 2023/05/05 13:44:11 by tgernez          ###   ########.fr       */
+/*   Updated: 2023/05/05 13:52:54 by tgernez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	eat(t_philo *philo, t_vars *vars)
 {
-	if (vars->ttf != -1 && philo->meal_number >= vars->ttf)
-		return ;
 	print_action(philo, EATING, vars);
 	pthread_mutex_lock(&philo->m_last_eat);
 	get_time(&philo->last_eat);
