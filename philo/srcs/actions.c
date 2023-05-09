@@ -6,7 +6,7 @@
 /*   By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:24 by tgernez           #+#    #+#             */
-/*   Updated: 2023/05/05 17:33:14 by tgernez          ###   ########.fr       */
+/*   Updated: 2023/05/09 10:23:29 by tgernez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,20 @@ void	eat(t_philo *philo, t_vars *vars)
 		pthread_mutex_unlock(&vars->m_ate_enough);
 	}
 	ft_usleep(vars->tte);
-	if (philo->nb == 2)
+}
+
+void	give_back_forks(t_philo *philo, t_vars *vars)
+{
+	if (philo->nb == vars->nb_philo - 1)
 	{
 		pthread_mutex_unlock(&philo->fork);
 		pthread_mutex_unlock(&philo->next->fork);
-		return ;
 	}
-	pthread_mutex_unlock(&philo->next->fork);
-	pthread_mutex_unlock(&philo->fork);
+	else
+	{
+		pthread_mutex_unlock(&philo->next->fork);
+		pthread_mutex_unlock(&philo->fork);
+	}
 }
 
 /*
@@ -41,16 +47,18 @@ void	eat(t_philo *philo, t_vars *vars)
 */
 void	take_forks(t_philo *philo, t_vars *vars)
 {
-	if (philo->nb == 2)
+	if (philo->nb == vars->nb_philo - 1)
 	{
 		pthread_mutex_lock(&philo->fork);
 		print_action(philo, TAKEN_FORK, vars);
 		pthread_mutex_lock(&philo->next->fork);
 		print_action(philo, TAKEN_FORK, vars);
-		return ;
 	}
-	pthread_mutex_lock(&philo->next->fork);
-	print_action(philo, TAKEN_FORK, vars);
-	pthread_mutex_lock(&philo->fork);
-	print_action(philo, TAKEN_FORK, vars);
+	else
+	{
+		pthread_mutex_lock(&philo->next->fork);
+		print_action(philo, TAKEN_FORK, vars);
+		pthread_mutex_lock(&philo->fork);
+		print_action(philo, TAKEN_FORK, vars);
+	}
 }

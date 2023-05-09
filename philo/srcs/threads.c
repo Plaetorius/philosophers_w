@@ -6,7 +6,7 @@
 /*   By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:07 by tgernez           #+#    #+#             */
-/*   Updated: 2023/05/02 21:33:03 by tgernez          ###   ########.fr       */
+/*   Updated: 2023/05/09 10:35:02 by tgernez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,11 @@ void	*simulation(void *arg)
 	{
 		take_forks(philo, vars);
 		eat(philo, vars);
+		give_back_forks(philo, vars);
 		print_action(philo, SLEEPING, vars);
 		ft_usleep(vars->tts);
 		print_action(philo, THINKING, vars);
+		ft_usleep(200);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:10 by tgernez           #+#    #+#             */
-/*   Updated: 2023/05/02 19:08:08 by tgernez          ###   ########.fr       */
+/*   Updated: 2023/05/09 10:00:01 by tgernez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ bool	set_time_start(t_vars *vars)
 	{
 		pthread_mutex_lock(&philo->m_last_eat);
 		if (get_time(&philo->last_eat) == false)
-			return (pthread_mutex_unlock(&philo->m_last_eat), false);
+			return (pthread_mutex_unlock(&philo->m_last_eat),
+				pthread_mutex_unlock(&vars->synchro), false);
 		pthread_mutex_unlock(&philo->m_last_eat);
 		philo = philo->next;
 		++i;
