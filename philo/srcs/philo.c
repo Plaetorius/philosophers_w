@@ -6,7 +6,7 @@
 /*   By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:13 by tgernez           #+#    #+#             */
-/*   Updated: 2023/05/02 16:10:14 by tgernez          ###   ########.fr       */
+/*   Updated: 2023/05/10 15:18:21 by tgernez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(int ac, char **av)
 	t_vars	vars;
 
 	if (ac < 5 || ac > 6)
-		return (printf("Not enough parameters\n"), EXIT_FAILURE);
+		return (printf("Wrong parameter number\n"), EXIT_FAILURE);
 	if (parsing(ac, av, &vars) == false)
 		return (printf("Parsing failed\n"), EXIT_FAILURE);
 	if (init(&vars) == false)

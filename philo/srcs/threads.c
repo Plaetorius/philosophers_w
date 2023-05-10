@@ -6,7 +6,7 @@
 /*   By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:07 by tgernez           #+#    #+#             */
-/*   Updated: 2023/05/09 10:35:02 by tgernez          ###   ########.fr       */
+/*   Updated: 2023/05/10 15:35:07 by tgernez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 void	sole_philo(t_philo *philo, t_vars *vars)
 {
-	t_ul	time;
+	t_ul			time;
 
 	time = 0;
 	get_time(&vars->start_time);
 	get_time(&philo->last_eat);
 	get_time(&time);
+	pthread_mutex_init(&philo->fork, NULL);
+	pthread_mutex_lock(&philo->fork);
 	print_action(philo, TAKEN_FORK, vars);
 	while (true)
 	{
@@ -28,6 +30,8 @@ void	sole_philo(t_philo *philo, t_vars *vars)
 			break ;
 		ft_usleep(200);
 	}
+	pthread_mutex_unlock(&philo->fork);
+	pthread_mutex_destroy(&philo->fork);
 	printf("%lu %d died\n", (time - vars->start_time) / 1000, philo->nb);
 	vars->end = true;
 }
@@ -59,12 +63,17 @@ void	*simulation(void *arg)
 	while (!must_simul_end(vars))
 	{
 		take_forks(philo, vars);
+		if (must_simul_end(vars))
+		{
+			give_back_forks(philo, vars);
+			break ;
+		}
 		eat(philo, vars);
 		give_back_forks(philo, vars);
 		print_action(philo, SLEEPING, vars);
 		ft_usleep(vars->tts);
 		print_action(philo, THINKING, vars);
-		ft_usleep(200);
+		// ft_usleep(200);
 	}
 	return (NULL);
 }
@@ -92,6 +101,6 @@ void	monitor(t_philo *philo, t_vars *vars)
 		if (must_simul_end(vars))
 			break ;
 		philo = philo->next;
-		ft_usleep(200);
+		// ft_usleep(200);
 	}
 }

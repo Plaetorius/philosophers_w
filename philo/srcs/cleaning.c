@@ -6,7 +6,7 @@
 /*   By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:21 by tgernez           #+#    #+#             */
-/*   Updated: 2023/05/02 16:10:21 by tgernez          ###   ########.fr       */
+/*   Updated: 2023/05/10 14:37:05 by tgernez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ int	join_philo_threads(t_vars *vars, int failed_nb)
 	The condition "philo != NULL" is to protect against a failure that might
 	happen when this function is being called in create_philos, in case of a
 	malloc fail
+
+	FIXME Do I need to create a mutex for vars->philos, because philo states
+	might change will I try to join them?
 */
 void	free_philos(t_philo *philo)
 {

@@ -6,7 +6,7 @@
 /*   By: tgernez <tgernez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:18 by tgernez           #+#    #+#             */
-/*   Updated: 2023/05/02 16:10:19 by tgernez          ###   ########.fr       */
+/*   Updated: 2023/05/10 15:16:28 by tgernez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,15 @@ bool	init(t_vars	*vars)
 {
 	if (init_philos(vars) == false)
 		return (free_philos(vars->philos), false);
+	if (vars->nb_philo == 1)
+		return (sole_philo(vars->philos, vars), true);
 	if (init_mutexes(vars) == false)
 		return (destroy_mutexes(vars), free_philos(vars->philos), false);
-	if (vars->nb_philo == 1)
-		sole_philo(vars->philos, vars);
-	else
-	{
-		if (init_philo_threads(vars) == false)
-			return (destroy_mutexes(vars), free_philos(vars->philos), false);
-		if (set_time_start(vars) == false)
-			return (join_philo_threads(vars, vars->nb_philo),
-				destroy_mutexes(vars), free_philos(vars->philos), false);
-		monitor(vars->philos, vars);
-	}
+	if (init_philo_threads(vars) == false)
+		return (destroy_mutexes(vars), free_philos(vars->philos), false);
+	if (set_time_start(vars) == false)
+		return (join_philo_threads(vars, vars->nb_philo),
+			destroy_mutexes(vars), free_philos(vars->philos), false);
+	monitor(vars->philos, vars);
 	return (true);
 }
